@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jean Dupont — Semiconductor Researcher</title>
+<title> Martin Lapeyre — Semiconductor Researcher</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +12,7 @@
     --bg2: #0d1219;
     --bg3: #111820;
     --border: rgba(255,255,255,0.07);
-    --accent: #00c8a0;
+    --accent: rgba(209, 40, 40, 0.733);
     --accent2: #0090ff;
     --text: #e8edf2;
     --muted: #6b7a8d;
@@ -73,20 +73,21 @@
   .hero-grid-bg {
     position: absolute; inset: 0; z-index: 0;
     background-image:
-      linear-gradient(rgba(0,200,160,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,200,160,.04) 1px, transparent 1px);
+      linear-gradient(rgba(176, 9, 9, 0.174) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(176, 9, 9, 0.174) 1px, transparent 1px);
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse 80% 80% at 60% 40%, black 20%, transparent 80%);
-  }
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,200,160,.12) 0%, transparent 70%);
+  } @keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+
+.hero-glow {
+   position: absolute;
+   width: 600px; height: 600px;
+   border-radius: 50%;
+   background: radial-gradient(circle, rgba(180, 13, 13, 0.655) 0%, transparent 70%);
     top: 10%; right: -100px; z-index: 0;
     animation: pulse 6s ease-in-out infinite;
   }
-  @keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+@keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} } 
 
   .hero-content { position: relative; z-index: 1; }
   .hero-tag {
@@ -171,7 +172,7 @@
 
   /* ── ABOUT ── */
   #about .about-grid {
-    display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: start;
+     display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: start; 
   }
   .about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: .95rem; }
   .about-text p strong { color: var(--text); font-weight: 500; }
@@ -190,7 +191,7 @@
     color: var(--muted);
     background: var(--bg2);
   }
-  .tag.accent { border-color: rgba(0,200,160,.3); color: var(--accent); }
+  .tag.accent { border-color: rgba(174, 12, 12, 0.453); color: var(--accent); }
 
   .contact-card {
     background: var(--bg2); border: 1px solid var(--border);
@@ -329,13 +330,68 @@
     .product-tags { display: none; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
+
+  .full-width-image {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  overflow: hidden;
+}
+
+.full-width-image img {
+  width: 100%;
+  height: 60vh;        /* ajuste la hauteur */
+  object-fit: cover;   /* important pour garder un rendu propre */
+  display: block;
+}
+
+.parallax-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.parallax-bg img {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+.parallax-section {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.parallax-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 4rem;
+  max-width: 600px;
+}
+
+.parallax-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  z-index: 1;
+}
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">JD</a>
+  <a class="nav-logo" href="#">HOME</a>
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#experience">Experience</a>
@@ -348,13 +404,13 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-grid-bg"></div>
-  <div class="hero-glow"></div>
+  <!-- <div class="hero-glow"></div> -->
 
   <div class="hero-content">
-    <div class="hero-tag">PhD Candidate · Semiconductor Devices</div>
-    <h1>Jean <em>Dupont</em></h1>
+    <h1>Martin <em>Lapeyre</em></h1>
+    <div class="hero-tag">PhD Candidate</div>
     <p class="hero-desc">
-      Designing next-generation compound semiconductor devices at the interface of physics, materials science, and engineering — seeking research & industry roles in the US semiconductor ecosystem.
+      Designing next-generation of digital image sensors seeking research & industry roles in the US semiconductor ecosystem.
     </p>
     <div class="hero-ctas">
       <a class="btn-primary" href="#research">View Research ↓</a>
@@ -382,12 +438,24 @@
   </div>
 </section>
 
+<!-- image 1 -->
+<section class="parallax-section">
+  <div class="parallax-bg">
+    <img src="design.svg" alt="">
+  </div>
+
+  <div class="parallax-content">
+    <h2>Building the pixel of tomorrow</h2>
+    <p>IMAGE 1</p>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
   <div class="section-tag">01 — About</div>
   <div class="about-grid">
     <div class="about-text fade-in">
-      <h2>Building the<br>transistors of tomorrow</h2>
+      <h2>Building the pixel of tomorrow</h2>
       <br>
       <p>
         I am a final-year PhD student at <strong>INSA Toulouse / LAAS-CNRS</strong>, working on high-frequency GaN HEMTs for RF and power electronics applications. My thesis explores novel gate dielectric stacks and epitaxial growth optimization to push breakdown voltage and frequency cutoffs simultaneously.
@@ -403,21 +471,21 @@
         <div class="skills-group">
           <div class="skill-cat">Core Expertise</div>
           <div class="skill-tags">
-            <span class="tag accent">GaN HEMT</span>
-            <span class="tag accent">MBE / MOCVD</span>
-            <span class="tag accent">RF Characterization</span>
-            <span class="tag accent">Device Simulation</span>
+            <span class="tag accent">Microelectronics design</span>
+            <span class="tag accent">Digital Pixel Sensor design</span>
+            <span class="tag accent">Sensor's caracterization</span>
+            <span class="tag accent">SPICE Simulation</span>
           </div>
         </div>
         <div class="skills-group">
           <div class="skill-cat">Tools & Methods</div>
           <div class="skill-tags">
-            <span class="tag">Silvaco ATLAS</span>
-            <span class="tag">TCAD Sentaurus</span>
-            <span class="tag">AFM / TEM</span>
-            <span class="tag">S-parameter</span>
-            <span class="tag">Python / MATLAB</span>
-            <span class="tag">Cleanroom lithography</span>
+            <span class="tag">Cadence/Virtuoso</span>
+            <span class="tag"></span>
+            <span class="tag"></span>
+            <span class="tag"></span>
+            <span class="tag">MATLAB/Simulink</span>
+            <span class="tag"></span>
           </div>
         </div>
         <div class="skills-group">
@@ -425,6 +493,7 @@
           <div class="skill-tags">
             <span class="tag">French (native)</span>
             <span class="tag">English (C1)</span>
+            <span class="tag">Spanish (B2)</span>
           </div>
         </div>
       </div>
@@ -440,12 +509,15 @@
         <div class="contact-row">
           <span class="contact-icon">@</span>
           <span class="contact-label">Email</span>
-          <span class="contact-val"><a href="mailto:jean.dupont@laas.fr">jean.dupont@laas.fr</a></span>
+          <span class="contact-val"><a href="mailto:martin.lapeyre@isae-supaero.fr">martin.lapeyre@isae-supaero.fr</a></span>
         </div>
         <div class="contact-row">
           <span class="contact-icon">in</span>
           <span class="contact-label">LinkedIn</span>
-          <span class="contact-val"><a href="#">linkedin.com/in/jeandupont</a></span>
+          <span class="contact-val">
+            <a href="https://www.linkedin.com/in/martin-lapeyre-07a70719/" target="_blank"> linkedin.com/Martin Lapeyre
+            </a>
+          </span>
         </div>
         <div class="contact-row">
           <span class="contact-icon">◈</span>
@@ -458,7 +530,7 @@
           <span class="contact-val"><a href="#">0000-0000-0000-0000</a></span>
         </div>
         <div style="margin-top:1.5rem;">
-          <a class="btn-primary" href="mailto:jean.dupont@laas.fr" style="width:100%;justify-content:center;">Get in touch →</a>
+          <a class="btn-primary" href="mailto:martin.lapeyre@isae-supaero.fr" style="width:100%;justify-content:center;">Get in touch →</a>
         </div>
       </div>
     </div>
@@ -666,5 +738,18 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
+
+<!-- Parallax -->
+<script>
+const bg = document.querySelector('.parallax-bg img');
+
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+
+  // petit mouvement lent (effet Apple)
+  bg.style.transform = `translateY(${y * 0.2}px) scale(1.1)`;
+});
+</script>
+
 </body>
 </html>
