@@ -1252,11 +1252,13 @@ updateTheme(); // init
 
 <!-- Scroll horizontal-->
 <script>
-  const track = document.querySelector('.research-track');
+const track = document.querySelector('.research-track');
 const slides = document.querySelectorAll('.research-slide');
 const dots = document.querySelectorAll('.dot');
 const nextBtn = document.querySelector('.research-arrow.next');
 const prevBtn = document.querySelector('.research-arrow.prev');
+
+const mobile = window.innerWidth < 900;
 
 let index = 0;
 
@@ -1266,12 +1268,14 @@ let startX = 0;
 let startTarget = 0;
 let isDown = false;
 
-function setIndex(i) {
-  index = Math.max(0, Math.min(slides.length - 1, i));
-  targetX = -index * track.clientWidth;
-
-  dots.forEach(d => d.classList.remove('active'));
-  dots[index].classList.add('active');
+function setIndex(i){
+    index = Math.max(0,Math.min(slides.length-1,i));
+    dots.forEach(d=>d.classList.remove('active')
+    );
+    dots[index].classList.add('active');
+    if(mobile){slides[index].scrollIntoView({behavior:'smooth',block:'start'});
+      return;}
+    targetX = -index * track.clientWidth;
 }
 
 // buttons
@@ -1297,7 +1301,7 @@ track.addEventListener("pointermove", (e) => {
   targetX = startTarget + dx * sensitivity;
 });
 
-const threshold = 0.2; // 20% de déplacement pour changer
+const threshold = 0.15; // 15% de déplacement pour changer
 
 function endDrag() {
   if (!isDown) return;
@@ -1319,15 +1323,25 @@ track.addEventListener("pointerup", endDrag);
 track.addEventListener("pointercancel", endDrag);
 
 // animation fluide
-function animate() {
-  currentX += (targetX - currentX) * 0.12;
+if(!mobile){
 
-  track.style.transform = `translate3d(${currentX}px, 0, 0)`;
+function animate(){
 
-  requestAnimationFrame(animate);
+ currentX +=
+ (targetX-currentX)*0.12;
+
+ track.style.transform =
+ `translate3d(${currentX}px,0,0)`;
+
+ requestAnimationFrame(
+ animate
+ );
+
 }
 
 animate();
+
+}
 
 // init correct
 setIndex(0);
