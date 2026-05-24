@@ -547,25 +547,16 @@ section {
     overflow:hidden;
 }
 
-.research-slider{
-    position:relative;
+.research-slider {
+  position: relative;
+  overflow: hidden;
 }
 
-.research-track{
-    display:flex;
-    width: 100%;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    scroll-behavior:smooth;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-    cursor: grab;
-    touch-action: pan-y;
-
-    user-select: none;
-    -webkit-user-select: none;
-    overscroll-behavior-x: contain;
-
+.research-track {
+  display: flex;
+  width: 100%;
+  will-change: transform;
+  touch-action: pan-y;
 }
 
 .research-track.dragging{
@@ -581,14 +572,14 @@ section {
   pointer-events: none;
 }
 
-.research-slide{
-    flex: 0 0 100%;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:5rem;
-    align-items:center;
-    min-height:70vh;
-    scroll-snap-align:start;
+.research-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(6rem, 10vw, 12rem);
 }
 
 .research-text{
@@ -616,6 +607,7 @@ section {
 .research-image{
     overflow:hidden;
     height:70vh;
+    transform: translateX(clamp(-50px, -5vw, -90px));
 }
 
 .research-image img{
@@ -1268,68 +1260,76 @@ updateTheme(); // init
 
 <!-- Scroll horizontal-->
 <script>
-const track = document.querySelector('.research-track');
-const slides = [...document.querySelectorAll('.research-slide')];
-const dots = [...document.querySelectorAll('.dot')];
+  const track = document.querySelector('.research-track');
+const slides = document.querySelectorAll('.research-slide');
+const dots = document.querySelectorAll('.dot');
 const nextBtn = document.querySelector('.research-arrow.next');
 const prevBtn = document.querySelector('.research-arrow.prev');
 
 let index = 0;
 
-// navigation
-function updateSlider(i){
-  index = Math.max(0, Math.min(slides.length - 1, i));
+let currentX = 0;
+let targetX = 0;
+let startX = 0;
+let startTarget = 0;
+let isDown = false;
 
-  track.scrollTo({
-    left: index * track.clientWidth,
-    behavior: 'smooth'
-  });
+function setIndex(i) {
+  index = Math.max(0, Math.min(slides.length - 1, i));
+  targetX = -index * track.clientWidth;
 
   dots.forEach(d => d.classList.remove('active'));
   dots[index].classList.add('active');
 }
 
-nextBtn.onclick = () => updateSlider(index + 1);
-prevBtn.onclick = () => updateSlider(index - 1);
-dots.forEach((dot, i) => dot.onclick = () => updateSlider(i));
+// buttons
+nextBtn.onclick = () => setIndex(index + 1);
+prevBtn.onclick = () => setIndex(index - 1);
+dots.forEach((d, i) => d.onclick = () => setIndex(i));
 
-// drag propre (pointer events)
-let isDown = false;
-let startX = 0;
-let startScroll = 0;
-
+// drag
 track.addEventListener("pointerdown", (e) => {
   isDown = true;
-  track.classList.add("dragging");
-
-  track.setPointerCapture(e.pointerId);
-
   startX = e.clientX;
-  startScroll = track.scrollLeft;
+  startTarget = targetX;
+  track.setPointerCapture(e.pointerId);
 });
 
 track.addEventListener("pointermove", (e) => {
   if (!isDown) return;
 
   const dx = e.clientX - startX;
-  track.scrollLeft = startScroll - dx;
+  const sensitivity = 2.2;
+
+  // IMPORTANT : drag plus sensible
+  targetX = startTarget + dx * sensitivity;
 });
 
-function stopDrag(e) {
+function endDrag() {
   if (!isDown) return;
-
   isDown = false;
-  track.classList.remove("dragging");
-  snapToClosestSlide();
+
+  // snap intelligent
+  const i = Math.round(-currentX / track.clientWidth);
+  setIndex(i);
 }
 
-track.addEventListener("pointerup", stopDrag);
-track.addEventListener("pointercancel", stopDrag);
+track.addEventListener("pointerup", endDrag);
+track.addEventListener("pointercancel", endDrag);
 
-function snapToClosestSlide(){
-  const i = Math.round(track.scrollLeft / track.clientWidth);
-  updateSlider(i);
+// animation fluide
+function animate() {
+  currentX += (targetX - currentX) * 0.12;
+
+  track.style.transform = `translate3d(${currentX}px, 0, 0)`;
+
+  requestAnimationFrame(animate);
 }
+
+animate();
+
+// init correct
+setIndex(0);
 </script>
 
 </body>
