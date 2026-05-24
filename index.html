@@ -692,7 +692,15 @@ section {
     grid-template-columns: none !important;
   }
 
-  /* IMAGE FIX (c'était ton bug principal) */
+  /* TEXTE */
+  .research-text {
+    order: 1 !important;
+    transform: none !important;
+    padding: 0 0 1.2rem 0 !important;
+    text-align: center;
+  }
+
+  /* IMAGE FIX */
   .research-image {
     width: 100% !important;
     height: 240px !important;
@@ -700,7 +708,7 @@ section {
     transform: none !important;
     overflow: hidden !important;
 
-    order: 1;
+    order: 2 !important;
   }
 
   .research-image img {
@@ -710,13 +718,7 @@ section {
     display: block !important;
   }
 
-  /* TEXTE */
-  .research-text {
-    order: 2;
-    transform: none !important;
-    padding: 1rem 0 !important;
-    text-align: center;
-  }
+
 
   /* IMPORTANT: supprimer tout décalage horizontal */
   #research {
