@@ -404,16 +404,6 @@ section {
   transform: scale(1.1);
   transition: none;
 }
-.parallax-1 .parallax-bg img {
-  filter: brightness(2) saturate(1.2) contrast(1.05);
-  object-position: center center;
-  height: 90vh;
-}
-.parallax-2 .parallax-bg img {
-  filter: brightness(0.75) saturate(1.05) contrast(1.1);
-  object-position: center top;
-  height: 75vh;
-}
 
 .parallax-section {
   position: relative;
@@ -622,15 +612,12 @@ section {
     align-items:center;
     gap:2rem;
     margin-top:2rem;
-    border-top:
-    1px solid
-    rgba(255,255,255,.1);
-    padding-top:
-    1.5rem;
+    border-top:1px solid rgba(255,255,255,.1);
+    padding-top: 1.5rem;
 }
 
 .research-arrow{
-    width:48px;
+    width:1024px;
     height:48px;
     border:none;
     background:none;
@@ -648,10 +635,10 @@ section {
 }
 
 .research-arrow svg{
-    width:22px;
-    height:22px;
+    width:48px;
+    height:48px;
     stroke:currentColor;
-    stroke-width:1.5;
+    stroke-width:2;
     fill:none;
     stroke-linecap:round;
     stroke-linejoin:round;
@@ -663,8 +650,8 @@ section {
 }
 
 .dot{
-    width:8px;
-    height:8px;
+    width:12px;
+    height:12px;
     border-radius:50%;
     background:
     rgba(255,255,255,.2);
@@ -735,7 +722,7 @@ section {
 </section>
 
 <!-- image 1 -->
-<section class="parallax-section parallax-1">
+<section class="parallax-section">
   <div class="parallax-bg">
     <img src="designred.svg" alt="">
   </div>
@@ -1109,59 +1096,53 @@ section {
 
 <!-- Parallax -->
 <script>
-const sections = document.querySelectorAll('.parallax-section');
+const parallaxSections = document.querySelectorAll('.parallax-section');
 
-let currentScroll = 0;
-let targetScroll = 0;
+function parallaxLoop() {
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
 
-function lerp(a, b, n) {
-  return (1 - n) * a + n * b;
-}
-
-function animate() {
-  targetScroll = window.scrollY;
-  currentScroll = lerp(currentScroll, targetScroll, 0.08);
-
-  sections.forEach(section => {
+  parallaxSections.forEach(section => {
     const img = section.querySelector('img');
     const text = section.querySelector('.parallax-title');
-    const rect = section.getBoundingClientRect();
     const label = section.querySelector('.parallax-label');
-    const vh = window.innerHeight;
-    const offset = (rect.top + rect.height / 2) - vh / 2;
 
-    const sectionTop = rect.top;
-    const sectionHeight = rect.height;
+    if (!img) return;
 
-    const progress = 1 - Math.min(
-      Math.abs(sectionTop) / sectionHeight,
-      1
-    );
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
 
-    const fade = Math.pow(progress, 1.8);
-    const parallax = -100+currentScroll * 0.12;
-    const scale = 1.12 + progress * 0.05;
+    const distance = scrollY - sectionTop;
 
-    // IMAGE
+    // progress propre (0 → 1)
+    const progress = 1 - Math.min(Math.abs(distance) / sectionHeight, 1);
+
+    // effets
+    const fade = Math.pow(progress, 1.6);
+    const scale = 1.05 + progress * 0.08;
+    const parallax = distance * 0.25;
+
+    // image
     img.style.transform = `translate3d(0, ${parallax}px, 0) scale(${scale})`;
     img.style.opacity = fade;
 
-    // TEXTE (même logique EXACTE)
+    // title
     if (text) {
       text.style.opacity = fade;
-      text.style.transform = `translate3d(0, ${parallax * 0.2}px, 0)`;
+      text.style.transform = `translate3d(0, ${parallax * 0.25}px, 0)`;
     }
 
+    // label
     if (label) {
       label.style.opacity = fade;
       label.style.transform = `translate3d(0, ${parallax * 0.15}px, 0)`;
     }
   });
 
-  requestAnimationFrame(animate);
+  requestAnimationFrame(parallaxLoop);
 }
 
-animate();
+parallaxLoop();
 </script>
 
 <script>
@@ -1299,7 +1280,7 @@ track.addEventListener("pointermove", (e) => {
   if (!isDown) return;
 
   const dx = e.clientX - startX;
-  const sensitivity = 2.2;
+  const sensitivity = 5;
 
   // IMPORTANT : drag plus sensible
   targetX = startTarget + dx * sensitivity;
