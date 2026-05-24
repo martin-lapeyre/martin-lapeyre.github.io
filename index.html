@@ -359,7 +359,7 @@
   will-change: transform, opacity;
   transform: scale(1.1);
   transition: none;
-  filter: saturate(1.05) contrast(1.05);
+  filter: brightness(2) saturate(1.15) contrast(1.08);
 }
 
 .parallax-section {
@@ -419,6 +419,75 @@
       rgba(0,0,0,0.65) 100%
     );
   z-index: 1;
+}
+
+.contact-val {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    color .25s,
+    transform .25s;
+}
+
+.copy-btn:hover {
+  color: var(--accent);
+  transform: scale(1.08);
+}
+
+.copy-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.copy-btn.copied {
+  color: var(--accent);
+}
+
+#copy-toast {
+  position: fixed;
+
+  bottom: 2rem;
+  left: 50%;
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  padding: .8rem 1.2rem;
+  background: rgba(10,10,10,.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  color: white;
+  font-size: .8rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .05em;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity .3s,
+    transform .3s;
+  z-index: 9999;
+}
+
+#copy-toast.show {
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
 }
 
 </style>
@@ -547,8 +616,53 @@
         </div>
         <div class="contact-row">
           <span class="contact-icon">@</span>
+
           <span class="contact-label">Email</span>
-          <span class="contact-val"><a href="mailto:martin.lapeyre@isae-supaero.fr">martin.lapeyre@isae-supaero.fr</a></span>
+
+          <span class="contact-val">
+            <a href="mailto:martin.lapeyre@isae-supaero.fr">
+              martin.lapeyre@isae-supaero.fr
+            </a>
+
+          <button
+            class="copy-btn"
+            onclick="copyMail()"
+            title="Copy email">
+
+            <svg
+              class="copy-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8">
+
+              <rect
+                x="9"
+                y="9"
+                width="11"
+                height="11"
+                rx="2">
+              </rect>
+
+              <path
+                d="
+                M5 15
+                H4
+                a2 2 0 0 1
+                -2 -2
+                V4
+                a2 2 0 0 1
+                2 -2
+                h9
+                a2 2 0 0 1
+                2 2
+                v1">
+              </path>
+
+            </svg>
+
+          </button>
+          </span>
         </div>
         <div class="contact-row">
           <span class="contact-icon">in</span>
@@ -833,6 +947,50 @@ function animate() {
 
 animate();
 </script>
+
+<script>
+function copyMail() {
+
+  navigator.clipboard.writeText(
+    "martin.lapeyre@isae-supaero.fr"
+  );
+
+  const btn =
+    document.querySelector(
+      '.copy-btn'
+    );
+
+  btn.classList.add(
+    'copied'
+  );
+
+  const toast =
+    document.getElementById(
+      "copy-toast"
+    );
+
+  toast.classList.add(
+    "show"
+  );
+
+  setTimeout(() => {
+
+    btn.classList.remove(
+      "copied"
+    );
+
+    toast.classList.remove(
+      "show"
+    );
+
+  }, 1800);
+
+}
+</script>
+
+<div id="copy-toast">
+  Email copied to clipboard
+</div>
 
 </body>
 </html>
