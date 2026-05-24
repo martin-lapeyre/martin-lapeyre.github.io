@@ -1280,19 +1280,28 @@ track.addEventListener("pointermove", (e) => {
   if (!isDown) return;
 
   const dx = e.clientX - startX;
-  const sensitivity = 5;
+  const sensitivity = 1.5;
 
   // IMPORTANT : drag plus sensible
   targetX = startTarget + dx * sensitivity;
 });
 
+const threshold = 0.1; // 10% de déplacement pour changer
+
 function endDrag() {
   if (!isDown) return;
   isDown = false;
 
-  // snap intelligent
-  const i = Math.round(-currentX / track.clientWidth);
-  setIndex(i);
+  const rawIndex = -currentX / track.clientWidth;
+  const direction = rawIndex - index;
+
+  let newIndex = index;
+
+  if (Math.abs(direction) > threshold) {
+    newIndex = direction > 0 ? index + 1 : index - 1;
+  }
+
+  setIndex(newIndex);
 }
 
 track.addEventListener("pointerup", endDrag);
