@@ -354,34 +354,70 @@
 
 .parallax-bg img {
   width: 100%;
-  height: 120%;
+  height: 130%;
   object-fit: cover;
-  transform: translateY(0);
-  will-change: transform;
+  will-change: transform, opacity;
+  transform: scale(1.1);
+  transition: none;
+  filter: saturate(1.05) contrast(1.05);
 }
 
 .parallax-section {
   position: relative;
   width: 100%;
-  height: 70vh;
+  height: 90vh;
   overflow: hidden;
   display: flex;
   align-items: center;
 }
 
 .parallax-content {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
   color: white;
-  padding: 4rem;
-  max-width: 600px;
+  pointer-events: none;
+}
+
+.parallax-title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  transition: none; /* important : pas de fade CSS indépendant */
+}
+
+.parallax-label {
+  position: absolute;
+  right: 3rem;
+  bottom: 2.5rem;
+  z-index: 3;
+
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,0.7);
+
+  pointer-events: none;
+  transition: none;
 }
 
 .parallax-section::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      rgba(0,0,0,0.25) 60%,
+      rgba(0,0,0,0.65) 100%
+    );
   z-index: 1;
 }
 
@@ -420,19 +456,19 @@
 
   <div class="hero-stats">
     <div class="stat-item">
-      <div class="stat-number">4<span>+</span></div>
+      <div class="stat-number">3<span>+</span></div>
       <div class="stat-label">Years of PhD research</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">8<span>+</span></div>
-      <div class="stat-label">Publications & conferences</div>
+      <div class="stat-number">4<span>+</span></div>
+      <div class="stat-label">Years of experience</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">3</div>
-      <div class="stat-label">Devices developed</div>
+      <div class="stat-number">2</div>
+      <div class="stat-label">Prototypes developed</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">1<span>×</span></div>
+      <div class="stat-number">1</div>
       <div class="stat-label">Patent filed</div>
     </div>
   </div>
@@ -441,12 +477,15 @@
 <!-- image 1 -->
 <section class="parallax-section">
   <div class="parallax-bg">
-    <img src="design.svg" alt="">
+    <img src="designred.svg" alt="">
   </div>
 
   <div class="parallax-content">
-    <h2>Building the pixel of tomorrow</h2>
-    <p>IMAGE 1</p>
+    <h2 class="parallax-title">Building the pixel of tomorrow</h2>
+  </div>
+
+  <div class="parallax-label">
+    3D rendering of digital pixel's design · Martin Lapeyre
   </div>
 </section>
 
@@ -458,13 +497,13 @@
       <h2>Building the pixel of tomorrow</h2>
       <br>
       <p>
-        I am a final-year PhD student at <strong>INSA Toulouse / LAAS-CNRS</strong>, working on high-frequency GaN HEMTs for RF and power electronics applications. My thesis explores novel gate dielectric stacks and epitaxial growth optimization to push breakdown voltage and frequency cutoffs simultaneously.
+        I am a final-year PhD student at <strong>ISAE-SUPAERO</strong>, working on Digital Pixel Sensor design for actual and future most demanding tactical and space applications.
       </p>
       <p>
-        Before the PhD, I earned a <strong>Master's degree in Nanoelectronics</strong> from Université Paul Sabatier (Toulouse) with a specialization in compound semiconductors, following a B.Sc. in Physics.
+        Before the PhD, I earned a <strong>Master's degree in electrical engineering </strong> from INSA Lyon (France) with a specialization in <strong>microelectronics and semiconductor's physics</strong>.
       </p>
       <p>
-        I am actively seeking a <strong>postdoc or industry R&D position in the United States</strong> starting late 2025, particularly in GaN, SiC, or advanced CMOS technology groups.
+        I am actively seeking a <strong>postdoc or industry R&D position</strong> starting late 2026, particularly as <strong>VLSI designer or digital image sensor architect</strong>.
       </p>
 
       <div class="skills-block">
@@ -741,14 +780,58 @@
 
 <!-- Parallax -->
 <script>
-const bg = document.querySelector('.parallax-bg img');
+const sections = document.querySelectorAll('.parallax-section');
 
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
+let currentScroll = 0;
+let targetScroll = 0;
 
-  // petit mouvement lent (effet Apple)
-  bg.style.transform = `translateY(${y * 0.2}px) scale(1.1)`;
-});
+function lerp(a, b, n) {
+  return (1 - n) * a + n * b;
+}
+
+function animate() {
+  targetScroll = window.scrollY;
+  currentScroll = lerp(currentScroll, targetScroll, 0.08);
+
+  sections.forEach(section => {
+    const img = section.querySelector('img');
+    const text = section.querySelector('.parallax-title');
+    const rect = section.getBoundingClientRect();
+    const label = section.querySelector('.parallax-label');
+
+    const sectionTop = rect.top;
+    const sectionHeight = rect.height;
+
+    const progress = 1 - Math.min(
+      Math.abs(sectionTop) / sectionHeight,
+      1
+    );
+
+    const fade = Math.pow(progress, 1.8);
+
+    const parallax = currentScroll * 0.12;
+    const scale = 1.12 + progress * 0.05;
+
+    // IMAGE
+    img.style.transform = `translate3d(0, ${parallax}px, 0) scale(${scale})`;
+    img.style.opacity = fade;
+
+    // TEXTE (même logique EXACTE)
+    if (text) {
+      text.style.opacity = fade;
+      text.style.transform = `translate3d(0, ${parallax * 0.2}px, 0)`;
+    }
+
+    if (label) {
+      label.style.opacity = fade;
+      label.style.transform = `translate3d(0, ${parallax * 0.15}px, 0)`;
+    }
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
 </script>
 
 </body>
