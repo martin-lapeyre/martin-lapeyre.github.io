@@ -669,71 +669,70 @@ section {
   scale(1.2);
 }
 
-@media (max-width:900px){
-/* ===== RESEARCH MOBILE ===== */
+@media (max-width: 900px) {
 
-  .research-track{
-    display:flex;
-    flex-direction:column;
-    gap:4rem;
-    transform:none !important;
+  /* on neutralise complètement le slider horizontal */
+  .research-slider,
+  .research-track {
+    display: block !important;
+    transform: none !important;
+    overflow: visible !important;
   }
 
-  .research-slide{
-    width:100%;
-    min-width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:1.5rem;
-    align-items:center;
-    text-align:center;
+  /* chaque slide devient une section normale */
+  .research-slide {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+    min-width: 100% !important;
+
+    margin-bottom: 4rem;
+
+    grid-template-columns: none !important;
   }
 
-  .research-image{
-    width:100%;
-    height:260px;
-    overflow:hidden;
-    transform:none !important;
-    margin:0 auto;
-    order:1;
+  /* IMAGE FIX (c'était ton bug principal) */
+  .research-image {
+    width: 100% !important;
+    height: 240px !important;
+
+    transform: none !important;
+    overflow: hidden !important;
+
+    order: 1;
   }
 
-  .research-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
+  .research-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
   }
 
-  .research-text{
-    order:2;
-    padding:0;
-    width:100%;
-    transform:none !important;
+  /* TEXTE */
+  .research-text {
+    order: 2;
+    transform: none !important;
+    padding: 1rem 0 !important;
+    text-align: center;
   }
 
-  .research-text p{
-    max-width:none;
+  /* IMPORTANT: supprimer tout décalage horizontal */
+  #research {
+    overflow: visible !important;
   }
 
-  .research-index{
-    font-size:3rem;
+  body {
+    overflow-x: hidden !important;
   }
 
-
-  /* cacher navigation slider */
-  .research-controls{
-    display:none !important;
+  /* on cache TOUT le contrôle slider */
+  .research-controls,
+  .research-dots,
+  .research-arrow {
+    display: none !important;
   }
-
-  .research-dots{
-    display:none !important;
-  }
-
-  .research-arrow{
-    display:none !important;
-  }
-
 }
 
 
@@ -1321,46 +1320,7 @@ const mobile = window.innerWidth < 900;
 let index = 0;
 
 if(mobile){
-
-    // version verticale mobile
-    track.style.transform = "none";
-
-    const observer = new IntersectionObserver(entries=>{
-
-        entries.forEach(entry=>{
-
-            if(entry.isIntersecting){
-
-                const i =
-                [...slides].indexOf(
-                    entry.target
-                );
-
-                dots.forEach(
-                    d=>d.classList.remove(
-                        'active'
-                    )
-                );
-
-                if(dots[i])
-                    dots[i].classList.add(
-                        'active'
-                    );
-
-                index=i;
-
-            }
-
-        });
-
-    },{
-        threshold:0.55
-    });
-
-    slides.forEach(
-        s=>observer.observe(s)
-    );
-
+ 
 }
 
 else{
