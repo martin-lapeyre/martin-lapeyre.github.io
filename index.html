@@ -858,7 +858,7 @@ section {
   height: 100%;
   object-fit: cover;
   display: block;
-  transform: translateY(-100px);
+ 
 }
 
 /* overlay sombre pour lisibilité */
@@ -1338,8 +1338,8 @@ function parallaxLoop() {
     const parallax = distance * 0.25;
 
     // image
-    img.style.transform = `translate3d(0, ${parallax}px, 0) scale(${scale})`;
-    img.style.opacity = fade;
+    // img.style.transform = `translate3d(0, ${parallax}px, 0) scale(${scale})`;
+    // img.style.opacity = fade;
 
     // title
     if (text) {
