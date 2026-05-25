@@ -37,15 +37,15 @@
   }
 
 body.theme-light {
-  --bg: #f6f7fb;
+  --bg: #eceded;
   --bg2: #ffffff;
-  --bg3: #eef1f6;
+  --bg3: #d7d9dc;
   --border: rgba(10,20,30,0.12);
   --accent: rgba(209, 40, 40, 0.9);
   --accent2: #0066ff;
   --text: #0b1220;
   --muted: #4a5568;
-  --dim: #8a94a6;
+  --dim: #788191;
 }
 
 body.theme-dark {
@@ -63,7 +63,6 @@ body.theme-dark {
 .tag,
 .contact-card,
 .timeline-item,
-.product-row,
 .research-card,
 .pub-item,
 nav,
@@ -198,7 +197,7 @@ section {
   }
 
   /* ── SECTIONS ── */
-  section { padding: 7rem 4rem; border-top: none; }
+  section { padding: 5rem 4rem 3rem; border-top: none; }
   .section-tag {
     font-family: 'DM Mono', monospace;
     font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
@@ -310,24 +309,101 @@ section {
     border: 1px solid rgba(0,200,160,.25); color: var(--accent);
   }
 
-  /* ── PRODUCTS ── */
-  #products .products-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .product-row {
-    display: grid; grid-template-columns: 80px 1fr auto;
-    align-items: center; gap: 2rem;
-    background: var(--bg2); padding: 1.8rem 2rem;
-    transition: background .2s;
-    cursor: default;
+  /* ── DEVICES ── */
+  .device-block {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-areas:
+      "content image"
+      "text image";
+    column-gap: 3rem;
+    align-items: start;
+    margin-bottom: 6rem;
   }
-  .product-row:hover { background: var(--bg3); }
-  .product-idx {
-    font-family: 'DM Mono', monospace; font-size: .7rem;
-    color: var(--dim); letter-spacing: .1em;
+
+  .device-block:last-child {
+    margin-bottom: 0;
   }
-  .product-info {}
-  .product-name { font-size: .95rem; font-weight: 600; margin-bottom: .3rem; }
-  .product-sub { font-size: .82rem; color: var(--muted); }
-  .product-tags { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: flex-end; }
+
+    .device-content {
+    grid-area: content;
+  }
+
+  .device-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .device-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .device-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .device-table td {
+    padding: 0.8rem 0;
+  }
+
+  .device-table td:first-child {
+    color: var(--muted);
+    width: 40%;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .device-image {
+    grid-area: image;
+    width: 100%;
+    /*height: 380px;*/
+    overflow: hidden;
+    aspect-ratio: 12 / 9;
+    margin-bottom: 0;
+  }
+
+  .device-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+.device-text {
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--muted);
+  opacity: 0.9;
+  grid-area: text;
+  
+}
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+  .device-block {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "image"
+      "content"
+      "text";
+    row-gap: 1.5rem;
+  }
+
+    .device-image {
+      order: -1; /* image AU DESSUS */
+      /*height: 500px;*/
+      margin-bottom: 2rem;
+      aspect-ratio: 14 / 9;
+
+    }
+  }
+ 
 
   /* ── PUBLICATIONS ── */
   #publications .pub-list { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -366,12 +442,10 @@ section {
     .nav-links { display: none; }
     #hero { grid-template-columns: 1fr; padding: 7rem 2rem 3rem; }
     .hero-stats { padding-left: 0; border-left: none; border-top: 1px solid var(--border); padding-top: 2rem; flex-direction: row; flex-wrap: wrap; }
-    section { padding: 4rem 2rem; }
+    section { padding: 5rem 4rem 3rem; }
     #about .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     .two-col { grid-template-columns: 1fr; }
     #research .research-grid { grid-template-columns: 1fr; }
-    .product-row { grid-template-columns: 50px 1fr; }
-    .product-tags { display: none; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
 
@@ -394,6 +468,7 @@ section {
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  width: all;
 }
 
 .parallax-bg img {
@@ -440,14 +515,14 @@ section {
   z-index: 3;
 
   font-family: 'DM Mono', monospace;
-  font-size: .7rem;
-  letter-spacing: .12em;
+  font-size: .6rem;
+  letter-spacing: .15em;
   text-transform: uppercase;
 
   color: rgba(255,255,255,0.7);
 
   pointer-events: none;
-  transition: none;
+  transition: 1s;
 }
 
 .parallax-section::after {
@@ -569,7 +644,7 @@ section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: clamp(6rem, 10vw, 12rem);
+  gap: clamp(5rem, 10vw, 12rem);
 }
 
 .research-text{
@@ -598,14 +673,20 @@ section {
 
 .research-image{
     overflow:hidden;
-    height:70vh;
+    /*height:70vh;*/
+    aspect-ratio: 12/9;
     transform: translateX(clamp(-100px, -5vw, -90px));
+    
 }
 
 .research-image img{
     width:100%;
     height:100%;
     object-fit:cover;
+}
+
+.designred {
+  filter: brightness(2);
 }
 
 .research-controls{
@@ -626,10 +707,12 @@ section {
     color:white;
     cursor:pointer;
     opacity:.55;
-    transition:
-    opacity .3s,
+    transition:opacity .3s,
     transform .3s;
+
+    display:center;
 }
+
 
 .research-arrow:hover{
     opacity:1;
@@ -644,6 +727,15 @@ section {
     fill:none;
     stroke-linecap:round;
     stroke-linejoin:round;
+    
+}
+
+.research-arrow.prev {
+    transform: translateX(-150px);
+}
+
+.research-arrow.next {
+    transform: translateX(150px);
 }
 
 .research-dots{
@@ -671,6 +763,22 @@ section {
 
 @media (max-width: 900px) {
 
+  .parallax-label {
+    bottom: 2.5rem;
+    z-index: 3;
+
+    font-family: 'DM Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+
+    pointer-events: none;
+    transition: 1s;
+  }
+
   /* on neutralise complètement le slider horizontal */
   .research-slider,
   .research-track {
@@ -686,9 +794,7 @@ section {
 
     width: 100% !important;
     min-width: 100% !important;
-
-    margin-bottom: 4rem;
-
+    gap: 2rem;
     grid-template-columns: none !important;
   }
 
@@ -705,11 +811,10 @@ section {
   /* IMAGE FIX */
   .research-image {
     width: 100% !important;
-    height: 240px !important;
+    /*height: 520px !important;*/
     margin-top: 0 !important;
     transform: none !important;
     overflow: hidden !important;
-
     order: 2 !important;
   }
 
@@ -719,7 +824,6 @@ section {
     object-fit: cover !important;
     display: block !important;
   }
-
 
 
   /* IMPORTANT: supprimer tout décalage horizontal */
@@ -737,6 +841,45 @@ section {
   .research-arrow {
     display: none !important;
   }
+}
+
+/* FULL BLEED */
+.full-bleed-cta {
+  position: relative;
+  width: all;
+  height: 90vh;
+  overflow: hidden;
+}
+
+.full-bleed-cta img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.1);
+}
+
+/* overlay sombre pour lisibilité */
+.full-bleed-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1;
+}
+
+/* bouton centré */
+.cta-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.cta-overlay .btn-primary {
+  backdrop-filter: blur(10px);
 }
 
 
@@ -796,7 +939,7 @@ section {
 <!-- image 1 -->
 <section class="parallax-section">
   <div class="parallax-bg">
-    <img src="designred.svg" alt="">
+    <img src="designred.svg" class="designred" alt="">
   </div>
 
   <div class="parallax-content">
@@ -1078,44 +1221,48 @@ section {
 <section id="products" data-theme="dark">
   <div class="section-tag">04 — Devices</div>
   <h2>Devices Developed</h2>
-  <p class="section-intro">Key semiconductor devices designed, fabricated, and characterized during the PhD.</p>
+  <p class="section-intro">
+    Key semiconductor devices designed, fabricated, and characterized during the PhD.
+  </p>
 
-  <div class="products-list fade-in">
-    <div class="product-row">
-      <div class="product-idx">DEV — 001</div>
-      <div class="product-info">
-        <div class="product-name">MIS-HEMT GaN/Al₂O₃ — 650 V class</div>
-        <div class="product-sub">Metal-insulator-semiconductor HEMT with ALD Al₂O₃ gate dielectric. Achieved 750 V breakdown, 3.2 mS/mm transconductance, f_T = 28 GHz on 2-inch GaN-on-SiC wafers.</div>
-      </div>
-      <div class="product-tags">
-        <span class="tag accent">Power Electronics</span>
-        <span class="tag">ALD</span>
-        <span class="tag">Breakdown 750 V</span>
-      </div>
+  <!-- DEVICE 1 -->
+  <div class="device-block">
+    <div class="device-content">
+      <div class="device-title">MIS-HEMT GaN/Al₂O₃ — 650 V class</div>
+
+      <table class="device-table">
+        <tr><td>Architecture</td><td>MIS-HEMT (Al₂O₃ gate)</td></tr>
+        <tr><td>Breakdown</td><td>750 V</td></tr>
+        <tr><td>Transconductance</td><td>3.2 mS/mm</td></tr>
+        <tr><td>fT</td><td>28 GHz</td></tr>
+        <tr><td>Platform</td><td>GaN-on-SiC (2-inch)</td></tr>
+      </table>
     </div>
-    <div class="product-row">
-      <div class="product-idx">DEV — 002</div>
-      <div class="product-info">
-        <div class="product-name">Gate-Recessed E-mode GaN HEMT</div>
-        <div class="product-sub">Normally-off (enhancement-mode) transistor using fluorine plasma treatment and recessed gate. Positive V_th = +0.9 V with 200 mA/mm I_DSS. Critical for power converter integration.</div>
-      </div>
-      <div class="product-tags">
-        <span class="tag accent">E-mode</span>
-        <span class="tag">Normally-off</span>
-        <span class="tag">Fluorine implant</span>
-      </div>
+
+    <div class="device-text">
+      Short descriptive text goes here (process, impact, fabrication note, etc.)
     </div>
-    <div class="product-row">
-      <div class="product-idx">DEV — 003</div>
-      <div class="product-info">
-        <div class="product-name">Multi-finger RF HEMT — W-band</div>
-        <div class="product-sub">High-frequency GaN HEMT with 100 nm T-gate for operation above 90 GHz. Gate width 4×25 µm. f_T / f_max = 110 / 195 GHz. Fabricated in collaboration with Thales Research & Technology.</div>
-      </div>
-      <div class="product-tags">
-        <span class="tag accent">RF / mmWave</span>
-        <span class="tag">W-band</span>
-        <span class="tag">f_max 195 GHz</span>
-      </div>
+
+    <div class="device-image">
+      <img src="Exp1.jpg" alt="">
+    </div>
+  </div>
+
+  <!-- DEVICE 2 -->
+  <div class="device-block">
+    <div class="device-content">
+      <div class="device-title">Gate-Recessed E-mode GaN HEMT</div>
+
+      <table class="device-table">
+        <tr><td>Type</td><td>Enhancement-mode</td></tr>
+        <tr><td>Vth</td><td>+0.9 V</td></tr>
+        <tr><td>IDSS</td><td>200 mA/mm</td></tr>
+        <tr><td>Technique</td><td>Fluorine + recessed gate</td></tr>
+      </table>
+    </div>
+
+    <div class="device-image">
+      <img src="Exp1.jpg" alt="">
     </div>
   </div>
 </section>
@@ -1128,25 +1275,20 @@ section {
 
   <div class="pub-list fade-in">
     <div class="pub-item">
-      <div class="pub-title">Impact of ALD Al₂O₃ thickness on breakdown voltage and current collapse in GaN MIS-HEMTs for power applications</div>
-      <div class="pub-meta"><span>J. Dupont</span>, A. Martin, C. Fontaine, D. Carisetti — IEEE Transactions on Electron Devices, 2024</div>
-    </div>
-    <div class="pub-item">
-      <div class="pub-title">Interface trap density reduction in AlGaN/GaN MIS structures using in-situ NH₃ pre-treatment</div>
-      <div class="pub-meta"><span>J. Dupont</span>, A. Martin — Applied Physics Letters, 2023</div>
-    </div>
-    <div class="pub-item">
-      <div class="pub-title">Enhancement-mode GaN HEMTs with fluorine plasma gate treatment: threshold voltage stability under stress</div>
-      <div class="pub-meta"><span>J. Dupont</span>, C. Fontaine, A. Martin — IEDM 2023, Proc. IEEE International Electron Devices Meeting</div>
-    </div>
-    <div class="pub-item">
-      <div class="pub-title">Pulsed IV characterization of current collapse mechanisms in GaN-on-SiC HEMTs with SiN passivation</div>
-      <div class="pub-meta"><span>J. Dupont</span>, B. Grimbert, A. Martin — ECSCRM 2022</div>
-    </div>
-    <div class="pub-item">
       <div class="pub-title">Gate dielectric stack optimization for high-voltage GaN transistors — Patent FR2412345A (filed 2023, pending)</div>
       <div class="pub-meta">Inventors: <span>J. Dupont</span>, A. Martin, C. Fontaine — Assigned to CNRS / INSA Toulouse</div>
     </div>
+  </div>
+</section>
+
+<!-- FULL WIDTH IMAGE CTA -->
+<section class="full-bleed-cta">
+  <img src="design.svg" alt="Background">
+
+  <div class="cta-overlay">
+    <a class="btn-primary" href="https://martin-lapeyre.github.io/cv.pdf" target="_blank">
+      Download CV
+    </a>
   </div>
 </section>
 
